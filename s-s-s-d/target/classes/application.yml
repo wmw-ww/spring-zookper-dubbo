@@ -1,0 +1,21 @@
+server:
+  port: 9001
+spring:
+  dubbo:
+    application: provide-one
+    registry:
+      address: zookeeper://192.168.88.134:2181
+    protocol:
+      name: dubbo
+      port: 20800
+    scan: c.s.d.service.impl  #服务暴露与发现消费所在的package
+  datasource:
+    username: root
+    password: qwe
+    url: jdbc:mysql://localhost:3306/rk?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useSSL=false
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  #mybatis映射文件配置
+mybatis:
+  mapper-locations: classpath:/mapper/*.xml
+
+

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>       
+	<script src="https://cdn.bootcss.com/vue/2.6.9/vue.min.js"></script>
+	<script src="https://cdn.bootcss.com/axios/0.18.1/axios.js"></script>
+</head>
+<body>
+   <div id="ap">
+	   <table>
+		   <tr>
+			   <td>编号</td>
+			   <td>角色</td>
+			   <td>编辑权限</td>
+		   </tr>
+		   <tr v-for="i in list">
+			   <td>{{i.rid}}</td>
+			   <td>{{i.rname}}</td>
+			   <td><button @click="findAuth(i.rid)">编辑权限</button></td>
+		   </tr>
+	   </table>
+	   <table v-if="alist.length>0">
+		   <tr v-for="ai in alist">
+			   <td><input type="checkbox" :value="ai.aid" v-model="aids"><button>{{ai.aname}}</button></td>
+		   </tr>
+	   </table>
+	   {{aids}}
+   </div>
+<script type="text/javascript">
+	var aps = new Vue({
+		el:"#ap",
+		data:{
+			list:[],
+			alist:[],
+			aids:[]
+		},
+		mounted:function () {
+			this.findAllRole();
+		},
+		methods:{
+			findAllRole:function () {
+				is = this;
+				axios.get("http://127.0.0.1:10001/role").then(function (value) {
+					console.log(value.data);
+					is.list = value.data;
+				})
+			},
+			findAuth:function (rid) {
+				alert(rid);
+				is = this;
+				axios.get("http://127.0.0.1:10001/auth").then(function (value) {
+					console.log(value.data);
+					is.alist = value.data;
+				});
+				var param  = new URLSearchParams();
+				param.append("rid",[1,2,3]);
+				axios.post("http://127.0.0.1:10001/aids",param).then(function (msg) {
+					console.log(msg.data);
+					is.aids = msg.data;
+				})
+			}
+		}
+	})
+
+</script>
+</body>
+</html>
